@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENEM Pro - Prepare-se com Inteligência Artificial</title>
+    <link rel="stylesheet" href="tema-lousa.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Hero Section com Lousa */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: escrevendo 2s ease;
+        }
+        
+        @keyframes escrevendo {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero-subtitle {
+            font-size: 2em;
+            margin-bottom: 15px;
+            opacity: 0.95;
+        }
+        
+        .hero-description {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Seção de Disciplinas */
+        .disciplinas {
+            padding: 80px 20px;
+            background: rgba(255,255,255,0.98);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 3em;
+            color: var(--lousa-verde);
+            margin-bottom: 20px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 60px;
+        }
+        
+        .disciplinas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .disciplina-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .disciplina-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .disciplina-header {
+            height: 150px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .disciplina-icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+        
+        .disciplina-nome {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .disciplina-body {
+            padding: 25px;
+            background: white;
+        }
+        
+        .disciplina-descricao {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .disciplina-stats {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #999;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-links a {
+            color: var(--giz-branco);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--giz-amarelo);
+        }
+        
+        .footer-copy {
+            color: var(--giz-branco);
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3em; }
+            .hero-subtitle { font-size: 1.5em; }
+            .hero-description { font-size: 1.1em; }
+            .section-title { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Efeito de poeira de giz -->
+    <div class="poeira-giz"></div>
+
+    <!-- Hero Section com Lousa de Matemática -->
+    <section class="hero lousa-background lousa-matematica tema-lousa">
+        <div class="hero-content">
+            <h1 class="hero-title giz-text">🎓 ENEM Pro</h1>
+            <p class="hero-subtitle giz-destaque">Prepare-se com Inteligência Artificial</p>
+            <p class="hero-description giz-text">
+                A plataforma mais completa de preparação para o ENEM.<br>
+                Simulados personalizados, IA que corrige redações e biblioteca com 150+ ebooks.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn-giz btn-giz-amarelo" onclick="window.location.href='cadastro.html'">
+                    Começar Grátis
+                </button>
+                <button class="btn-giz" onclick="window.location.href='planos.html'">
+                    Ver Planos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Disciplinas -->
+    <section class="disciplinas">
+        <div class="container">
+            <h2 class="section-title">📚 Todas as Disciplinas do ENEM</h2>
+            <p class="section-subtitle">Cada disciplina com sua lousa personalizada e conteúdo especializado</p>
+            
+            <div class="disciplinas-grid">
+                <!-- Matemática -->
+                <div class="disciplina-card" onclick="irParaDisciplina('matematica')">
+                    <div class="disciplina-header lousa-matematica">
+                        <div class="disciplina-icon giz-text">📐</div>
+                        <div class="disciplina-nome giz-text">Matemática</div>
+                    </div>
+                    <div class="disciplina-body">
+                        <p class="disciplina-descricao">
+                            Álgebra, geometria, funções e estatística com milhares de questões.
+                        </p>
+                        <div class="disciplina-stats">
+                            <span>📝 2.500+ questões</span>
+                            <span>📚 25 ebooks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Física -->
+                <div class="disciplina-card" onclick="irParaDisciplina('fisica')">
+                    <div class="disciplina-header lousa-fisica">
+                        <div class="disciplina-icon giz-text">⚛️</div>
+                        <div class="disciplina-nome giz-text">Física</div>
+                    </div>
+                    <div class="disciplina-body">
+                        <p class="disciplina-descricao">
+                            Mecânica, termodinâmica, óptica e eletricidade explicadas.
+                        </p>
+                        <div class="disciplina-stats">
+                            <span>📝 1.800+ questões</span>
+                            <span>📚 20 ebooks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Química -->
+                <div class="disciplina-card" onclick="irParaDisciplina('quimica')">
+                    <div class="disciplina-header lousa-quimica">
+                        <div class="disciplina-icon giz-text">🧪</div>
+                        <div class="disciplina-nome giz-text">Química</div>
+                    </div>
+                    <div class="disciplina-body">
+                        <p class="disciplina-descricao">
+                            Orgânica, inorgânica, físico-química e tabela periódica.
+                        </p>
+                        <div class="disciplina-stats">
+                            <span>📝 1.500+ questões</span>
+                            <span>📚 18 ebooks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Biologia -->
+                <div class="disciplina-card" onclick="irParaDisciplina('biologia')">
+                    <div class="disciplina-header lousa-biologia">
+                        <div class="disciplina-icon giz-text">🧬</div>
+                        <div class="disciplina-nome giz-text">Biologia</div>
+                    </div>
+                    <div class="disciplina-body">
+                        <p class="disciplina-descricao">
+                            Citologia, genética, ecologia e evolução completos.
+                        </p>
+                        <div class="disciplina-stats">
+                            <span>📝 1.600+ questões</span>
+                            <span>📚 22 ebooks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- História -->
+                <div class="disciplina-card" onclick="irParaDisciplina('historia')">
+                    <div class="disciplina-header lousa-historia">
+                        <div class="disciplina-icon giz-text">📜</div>
+                        <div class="disciplina-nome giz-text">História</div>
+                    </div>
+                    <div class="disciplina-body">
+                        <p class="disciplina-descricao">
+                            Brasil, mundo, linha do tempo e interpretação histórica.
+                        </p>
+                        <div class="disciplina-stats">
+                            <span>📝 1.400+ questões</span>
+                            <span>📚 20 ebooks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Geografia -->
+                <div class="disciplina-card" onclick="irParaDisciplina('geografia')">
+                    <div class="disciplina-header lousa-geografia">
+                        <div class="disciplina-icon giz-text">🌍</div>
+                        <div class="disciplina-nome giz-text">Geografia</div>
+                    </div>
+                    <div class="disciplina-body">
+                        <p class="disciplina-descricao">
+                            Física, humana, econômica e geopolítica atualizada.
+                        </p>
+                        <div class="disciplina-stats">
+                            <span>📝 1.300+ questões</span>
+                            <span>📚 18 ebooks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Português -->
+                <div class="disciplina-card" onclick="irParaDisciplina('portugues')">
+                    <div class="disciplina-header lousa-portugues">
+                        <div class="disciplina-icon giz-text">📖</div>
+                        <div class="disciplina-nome giz-text">Português</div>
+                    </div>
+                    <div class="disciplina-body">
+                        <p class="disciplina-descricao">
+                            Gramática, interpretação, literatura e redação.
+                        </p>
+                        <div class="disciplina-stats">
+                            <span>📝 2.000+ questões</span>
+                            <span>📚 30 ebooks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Redação -->
+                <div class="disciplina-card" onclick="window.location.href='sistema-redacao.html'">
+                    <div class="disciplina-header lousa-portugues">
+                        <div class="disciplina-icon giz-text">✍️</div>
+                        <div class="disciplina-nome giz-text">Redação</div>
+                    </div>
+                    <div class="disciplina-body">
+                        <p class="disciplina-descricao">
+                            IA corrige sua redação nota 1000 em 5 competências.
+                        </p>
+                        <div class="disciplina-stats">
+                            <span>🤖 Correção IA</span>
+                            <span>📚 15 modelos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer lousa-background lousa-matematica">
+        <div class="container">
+            <div class="footer-links">
+                <a href="sobre.html">Sobre</a>
+                <a href="planos.html">Planos</a>
+                <a href="blog.html">Blog</a>
+                <a href="contato.html">Contato</a>
+                <a href="termos.html">Termos</a>
+                <a href="privacidade.html">Privacidade</a>
+            </div>
+            <div class="footer-copy giz-text">
+                © 2024 ENEM Pro. Todos os direitos reservados.<br>
+                Feito com ❤️ para ajudar você a conquistar seus sonhos!
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function irParaDisciplina(disciplina) {
+            // Redirecionar para página de simulados com filtro
+            window.location.href = `simulados-online.html?disciplina=${disciplina}`;
+        }
+    </script>
+</body>
+</html>

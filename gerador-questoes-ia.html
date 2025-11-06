@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Questões IA - Sistema ENEM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+        }
+        .premium-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .config-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        .config-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #555;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        .slider-container {
+            margin: 20px 0;
+        }
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+        }
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+        .slider-value {
+            text-align: center;
+            font-size: 1.2em;
+            color: #667eea;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-generate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        .btn-generate:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .questions-container {
+            margin-top: 40px;
+        }
+        .question-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .question-number {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .question-difficulty {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .difficulty-easy { background: #d4edda; color: #155724; }
+        .difficulty-medium { background: #fff3cd; color: #856404; }
+        .difficulty-hard { background: #f8d7da; color: #721c24; }
+        .question-text {
+            font-size: 1.1em;
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .alternatives {
+            margin: 20px 0;
+        }
+        .alternative {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .alternative:hover {
+            background: #e3f2fd;
+            border-color: #667eea;
+        }
+        .alternative.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .alternative.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        .alternative.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+        .show-answer-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .show-answer-btn:hover {
+            background: #5a6268;
+        }
+        .explanation {
+            display: none;
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #17a2b8;
+        }
+        .explanation.show {
+            display: block;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        .loading.show {
+            display: block;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .freemium-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .freemium-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        .upgrade-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        .upgrade-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+        .back-btn {
+            display: inline-block;
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Gerador de Questões com IA</h1>
+        <p class="subtitle">Questões personalizadas geradas automaticamente dos seus ebooks</p>
+
+        <!-- Aviso Freemium -->
+        <div class="freemium-notice" id="freemiumNotice">
+            <h3>🎁 Versão Gratuita</h3>
+            <p>Você pode gerar até <strong>5 questões por dia</strong> na versão gratuita.</p>
+            <p>Upgrade para <strong>Premium</strong> e tenha acesso ilimitado!</p>
+            <button class="upgrade-btn" onclick="window.location.href='assinatura.html'">
+                ⭐ Fazer Upgrade - R$ 29,90/mês
+            </button>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="questoesHoje">0</div>
+                <div class="stat-label">Questões Hoje</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="limiteRestante">5</div>
+                <div class="stat-label">Limite Restante</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="acertos">0</div>
+                <div class="stat-label">Taxa de Acerto</div>
+            </div>
+        </div>
+
+        <!-- Configurações -->
+        <div class="config-section">
+            <div class="config-title">
+                <span>⚙️</span>
+                Configurar Geração de Questões
+            </div>
+
+            <div class="form-group">
+                <label for="disciplina">Disciplina:</label>
+                <select id="disciplina">
+                    <option value="todas">Todas as Disciplinas</option>
+                    <option value="matematica">Matemática</option>
+                    <option value="fisica">Física</option>
+                    <option value="quimica">Química</option>
+                    <option value="biologia">Biologia</option>
+                    <option value="historia">História</option>
+                    <option value="geografia">Geografia</option>
+                    <option value="portugues">Português</option>
+                    <option value="literatura">Literatura</option>
+                    <option value="filosofia">Filosofia</option>
+                    <option value="sociologia">Sociologia</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dificuldade">Nível de Dificuldade:</label>
+                <select id="dificuldade">
+                    <option value="facil">Fácil</option>
+                    <option value="medio" selected>Médio</option>
+                    <option value="dificil">Difícil</option>
+                    <option value="misto">Misto</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="quantidade">Quantidade de Questões:</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="20" value="5" class="slider" id="quantidade">
+                    <div class="slider-value" id="quantidadeValue">5 questões</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="topico">Tópico Específico (opcional):</label>
+                <input type="text" id="topico" placeholder="Ex: Força e Movimento, Segunda Guerra Mundial...">
+            </div>
+
+            <button class="btn-generate" id="btnGenerate" onclick="gerarQuestoes()">
+                🚀 Gerar Questões com IA
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Gerando questões com IA...</p>
+            <p style="color: #666; font-size: 0.9em;">Isso pode levar alguns segundos</p>
+        </div>
+
+        <!-- Container de Questões -->
+        <div class="questions-container" id="questionsContainer"></div>
+
+        <a href="index.html" class="back-btn">← Voltar ao Menu Principal</a>
+    </div>
+
+    <script>
+        // Simulação de sistema (em produção, conectaria com backend real)
+        let questoesGeradasHoje = parseInt(localStorage.getItem('questoesHoje') || '0');
+        let isPremium = localStorage.getItem('isPremium') === 'true';
+        let questoesRespondidas = 0;
+        let questoesCorretas = 0;
+
+        // Atualizar UI inicial
+        document.getElementById('questoesHoje').textContent = questoesGeradasHoje;
+        document.getElementById('limiteRestante').textContent = isPremium ? '∞' : Math.max(0, 5 - questoesGeradasHoje);
+
+        if (isPremium) {
+            document.getElementById('freemiumNotice').style.display = 'none';
+        }
+
+        // Slider de quantidade
+        const slider = document.getElementById('quantidade');
+        const sliderValue = document.getElementById('quantidadeValue');
+        slider.oninput = function() {
+            sliderValue.textContent = this.value + ' questões';
+        }
+
+        function gerarQuestoes() {
+            // Verificar limite
+            const quantidade = parseInt(slider.value);
+            
+            if (!isPremium && (questoesGeradasHoje + quantidade) > 5) {
+                alert('❌ Limite diário atingido!\n\nFaça upgrade para Premium e tenha acesso ilimitado!');
+                window.location.href = 'assinatura.html';
+                return;
+            }
+
+            const disciplina = document.getElementById('disciplina').value;
+            const dificuldade = document.getElementById('dificuldade').value;
+            const topico = document.getElementById('topico').value;
+
+            // Mostrar loading
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('btnGenerate').disabled = true;
+            document.getElementById('questionsContainer').innerHTML = '';
+
+            // Simular chamada API (em produção, seria chamada real ao backend)
+            setTimeout(() => {
+                const questoes = gerarQuestoesSimuladas(quantidade, disciplina, dificuldade, topico);
+                exibirQuestoes(questoes);
+                
+                // Atualizar contadores
+                questoesGeradasHoje += quantidade;
+                localStorage.setItem('questoesHoje', questoesGeradasHoje.toString());
+                document.getElementById('questoesHoje').textContent = questoesGeradasHoje;
+                document.getElementById('limiteRestante').textContent = isPremium ? '∞' : Math.max(0, 5 - questoesGeradasHoje);
+
+                document.getElementById('loading').classList.remove('show');
+                document.getElementById('btnGenerate').disabled = false;
+            }, 2000);
+        }
+
+        function gerarQuestoesSimuladas(quantidade, disciplina, dificuldade, topico) {
+            // Em produção, isso viria do backend com IA real
+            const questoes = [];
+            
+            const exemplos = {
+                matematica: {
+                    pergunta: "Uma função quadrática f(x) = ax² + bx + c possui raízes em x = 2 e x = 5, e seu valor máximo é 9. Qual o valor de 'a'?",
+                    alternativas: [
+                        "a = -1",
+                        "a = -2",
+                        "a = -0,5",
+                        "a = 1",
+                        "a = 2"
+                    ],
+                    correta: 0,
+                    explicacao: "Para uma parábola com concavidade para baixo (possui máximo), o coeficiente 'a' deve ser negativo. Usando as raízes e o vértice, calculamos a = -1."
+                },
+                fisica: {
+                    pergunta: "Um corpo de massa 2kg está em movimento circular uniforme com velocidade de 4m/s em uma trajetória de raio 2m. Qual a força centrípeta atuando no corpo?",
+                    alternativas: [
+                        "16 N",
+                        "8 N",
+                        "4 N",
+                        "2 N",
+                        "32 N"
+                    ],
+                    correta: 0,
+                    explicacao: "A força centrípeta é calculada por Fc = m·v²/r = 2·16/2 = 16N."
+                },
+                historia: {
+                    pergunta: "A Revolução Francesa (1789-1799) teve como principais causas:",
+                    alternativas: [
+                        "Crise econômica, desigualdade social e influência iluminista",
+                        "Apenas problemas econômicos da França",
+                        "Conflitos religiosos entre católicos e protestantes",
+                        "Invasão de países vizinhos",
+                        "Disputas territoriais com a Inglaterra"
+                    ],
+                    correta: 0,
+                    explicacao: "A Revolução Francesa foi resultado de múltiplos fatores: crise econômica, desigualdade entre as classes sociais e influência das ideias iluministas que questionavam o absolutismo."
+                }
+            };
+
+            const disciplinas = disciplina === 'todas' 
+                ? Object.keys(exemplos) 
+                : [disciplina in exemplos ? disciplina : 'matematica'];
+
+            for (let i = 0; i < quantidade; i++) {
+                const disc = disciplinas[i % disciplinas.length];
+                const exemplo = exemplos[disc];
+                
+                questoes.push({
+                    numero: i + 1,
+                    disciplina: disc,
+                    dificuldade: dificuldade === 'misto' ? ['facil', 'medio', 'dificil'][i % 3] : dificuldade,
+                    pergunta: exemplo.pergunta,
+                    alternativas: exemplo.alternativas,
+                    correta: exemplo.correta,
+                    explicacao: exemplo.explicacao
+                });
+            }
+
+            return questoes;
+        }
+
+        function exibirQuestoes(questoes) {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '<h2 style="color: #667eea; margin-bottom: 30px;">📝 Questões Geradas</h2>';
+
+            questoes.forEach((questao, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <div class="question-header">
+                        <span class="question-number">Questão ${questao.numero}</span>
+                        <span class="question-difficulty difficulty-${questao.dificuldade}">
+                            ${questao.dificuldade.charAt(0).toUpperCase() + questao.dificuldade.slice(1)}
+                        </span>
+                    </div>
+                    <div class="question-text">${questao.pergunta}</div>
+                    <div class="alternatives">
+                        ${questao.alternativas.map((alt, i) => `
+                            <div class="alternative" onclick="selecionarAlternativa(${index}, ${i}, ${questao.correta})">
+                                ${String.fromCharCode(65 + i)}) ${alt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="show-answer-btn" onclick="mostrarResposta(${index}, ${questao.correta})">
+                        💡 Ver Resposta e Explicação
+                    </button>
+                    <div class="explanation" id="explanation-${index}">
+                        <strong>✅ Resposta Correta: ${String.fromCharCode(65 + questao.correta)})</strong>
+                        <p style="margin-top: 10px;">${questao.explicacao}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selecionarAlternativa(questaoIndex, alternativaIndex, correta) {
+            const alternatives = document.querySelectorAll(`#questionsContainer .question-card:nth-child(${questaoIndex + 2}) .alternative`);
+            
+            alternatives.forEach((alt, i) => {
+                alt.classList.remove('selected', 'correct', 'incorrect');
+                if (i === alternativaIndex) {
+                    if (i === correta) {
+                        alt.classList.add('correct');
+                        questoesCorretas++;
+                    } else {
+                        alt.classList.add('incorrect');
+                    }
+                }
+                if (i === correta) {
+                    alt.classList.add('correct');
+                }
+            });
+
+            questoesRespondidas++;
+            atualizarTaxaAcerto();
+            
+            // Mostrar explicação automaticamente
+            document.getElementById(`explanation-${questaoIndex}`).classList.add('show');
+        }
+
+        function mostrarResposta(questaoIndex, correta) {
+            document.getElementById(`explanation-${questaoIndex}`).classList.add('show');
+            
+            const alternatives = document.querySelectorAll(`#questionsContainer .question-card:nth-child(${questaoIndex + 2}) .alternative`);
+            alternatives[correta].classList.add('correct');
+        }
+
+        function atualizarTaxaAcerto() {
+            if (questoesRespondidas > 0) {
+                const taxa = Math.round((questoesCorretas / questoesRespondidas) * 100);
+                document.getElementById('acertos').textContent = taxa + '%';
+            }
+        }
+
+        // Resetar contador diário à meia-noite
+        const lastReset = localStorage.getItem('lastReset');
+        const today = new Date().toDateString();
+        if (lastReset !== today) {
+            localStorage.setItem('questoesHoje', '0');
+            localStorage.setItem('lastReset', today);
+            questoesGeradasHoje = 0;
+            document.getElementById('questoesHoje').textContent = '0';
+            document.getElementById('limiteRestante').textContent = isPremium ? '∞' : '5';
+        }
+    </script>
+</body>
+</html>

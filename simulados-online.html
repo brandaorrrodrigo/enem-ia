@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulados Online - Preparação ENEM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        .simulado-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+        .simulado-card:hover {
+            transform: translateX(10px);
+        }
+        .simulado-title {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .icon {
+            font-size: 1.8em;
+        }
+        .simulado-info {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 5px 5px 5px 0;
+        }
+        .btn-iniciar {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .btn-iniciar:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+        .dica-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        .dica-title {
+            color: #856404;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .back-btn {
+            display: inline-block;
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Simulados Online</h1>
+        <p class="subtitle">Pratique com questões no estilo ENEM e avalie seu desempenho</p>
+
+        <div class="simulado-card">
+            <div class="simulado-title">
+                <span class="icon">🎯</span>
+                Simulado Completo ENEM Pro
+            </div>
+            <div class="simulado-info">
+                Simulado completo com 180 questões divididas em dois dias, seguindo exatamente o formato da prova oficial.
+            </div>
+            <span class="badge">180 questões</span>
+            <span class="badge">5h30min por dia</span>
+            <span class="badge">Todas as áreas</span>
+            <br>
+            <button class="btn-iniciar">Iniciar Simulado</button>
+        </div>
+
+        <div class="simulado-card">
+            <div class="simulado-title">
+                <span class="icon">📚</span>
+                Simulado por Área de Conhecimento
+            </div>
+            <div class="simulado-info">
+                Escolha uma área específica para praticar: Linguagens, Matemática, Ciências Humanas ou Ciências da Natureza.
+            </div>
+            <span class="badge">45 questões</span>
+            <span class="badge">1h30min</span>
+            <span class="badge">Área específica</span>
+            <br>
+            <button class="btn-iniciar">Escolher Área</button>
+        </div>
+
+        <div class="simulado-card">
+            <div class="simulado-title">
+                <span class="icon">⚡</span>
+                Simulado Rápido - 30 Questões
+            </div>
+            <div class="simulado-info">
+                Perfeito para treinos rápidos! 30 questões mistas de todas as áreas para praticar diariamente.
+            </div>
+            <span class="badge">30 questões</span>
+            <span class="badge">45 minutos</span>
+            <span class="badge">Mix de áreas</span>
+            <br>
+            <button class="btn-iniciar">Começar Agora</button>
+        </div>
+
+        <div class="simulado-card">
+            <div class="simulado-title">
+                <span class="icon">🔥</span>
+                Desafio Semanal
+            </div>
+            <div class="simulado-info">
+                Questões difíceis selecionadas de provas anteriores. Teste seus limites!
+            </div>
+            <span class="badge">20 questões</span>
+            <span class="badge">Nível difícil</span>
+            <span class="badge">Ranking semanal</span>
+            <br>
+            <button class="btn-iniciar">Aceitar Desafio</button>
+        </div>
+
+        <div class="simulado-card">
+            <div class="simulado-title">
+                <span class="icon">📖</span>
+                Revisão de Provas Anteriores
+            </div>
+            <div class="simulado-info">
+                Refaça provas do ENEM dos últimos 5 anos para entender o padrão das questões.
+            </div>
+            <span class="badge">Provas 2020-2024</span>
+            <span class="badge">Gabarito comentado</span>
+            <span class="badge">Estatísticas</span>
+            <br>
+            <button class="btn-iniciar">Ver Provas</button>
+        </div>
+
+        <div class="dica-box">
+            <div class="dica-title">💡 Dicas para Fazer Simulados</div>
+            <p>✓ Reserve um ambiente tranquilo e sem distrações</p>
+            <p>✓ Respeite rigorosamente o tempo estipulado</p>
+            <p>✓ Não consulte materiais durante o simulado</p>
+            <p>✓ Após finalizar, revise TODAS as questões, inclusive as que acertou</p>
+            <p>✓ Anote seus pontos fracos para estudar depois</p>
+            <p>✓ Faça pelo menos 1 simulado completo por mês</p>
+        </div>
+
+        <a href="index.html" class="back-btn">← Voltar ao Menu Principal</a>
+    </div>
+</body>
+</html>

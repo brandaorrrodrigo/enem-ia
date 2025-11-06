@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Digital ENEM - Ebooks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            color: #f5576c;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .header p {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 15px 25px;
+            border: 2px solid #f5576c;
+            border-radius: 50px;
+            font-size: 1.1em;
+            outline: none;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #f5576c;
+            background: white;
+            color: #f5576c;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #f5576c;
+            color: white;
+        }
+
+        .stats-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #f5576c;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: white;
+        }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .book-author {
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .book-category {
+            display: inline-block;
+            background: #f093fb;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 5px 5px 10px 0;
+        }
+
+        .book-description {
+            color: #777;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-read,
+        .btn-download {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-read {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-read:hover,
+        .btn-download:hover {
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-close:hover {
+            color: #f5576c;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: white;
+            color: #f5576c;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .no-results h2 {
+            color: #f5576c;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            .search-container {
+                flex-direction: column;
+            }
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Biblioteca Digital ENEM</h1>
+            <p>Acervo completo de ebooks para sua preparação</p>
+        </div>
+
+        <div class="search-bar">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Pesquisar por título, autor ou assunto..."
+                    onkeyup="searchBooks()"
+                >
+                <button class="search-btn" onclick="searchBooks()">🔍 Buscar</button>
+            </div>
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterCategory('todas')" data-category="todas">Todas</button>
+                <button class="filter-btn" onclick="filterCategory('matemática')" data-category="matemática">Matemática</button>
+                <button class="filter-btn" onclick="filterCategory('português')" data-category="português">Português</button>
+                <button class="filter-btn" onclick="filterCategory('ciências')" data-category="ciências">Ciências</button>
+                <button class="filter-btn" onclick="filterCategory('humanas')" data-category="humanas">Humanas</button>
+                <button class="filter-btn" onclick="filterCategory('redação')" data-category="redação">Redação</button>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Ebooks Disponíveis</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">25</div>
+                <div class="stat-label">Categorias</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Gratuito</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Acesso Livre</div>
+            </div>
+        </div>
+
+        <div class="books-grid" id="booksGrid">
+            <!-- Os livros serão carregados aqui via JavaScript -->
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-btn">← Voltar ao Menu Principal</a>
+        </div>
+    </div>
+
+    <!-- Modal para visualização do ebook -->
+    <div class="modal" id="bookModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modalBookContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Base de dados de ebooks
+        const ebooks = [
+            {
+                id: 1,
+                title: 'Matemática para o ENEM - Guia Completo',
+                author: 'Prof. Carlos Silva',
+                category: 'matemática',
+                icon: '📐',
+                description: 'Aborda todos os tópicos de matemática cobrados no ENEM com exercícios resolvidos e teoria completa.',
+                pages: 450,
+                year: 2024
+            },
+            {
+                id: 2,
+                title: 'Redação Nota 1000 - Passo a Passo',
+                author: 'Profa. Ana Santos',
+                category: 'redação',
+                icon: '✍️',
+                description: 'Método completo para conquistar a nota máxima na redação do ENEM com exemplos práticos e correções.',
+                pages: 280,
+                year: 2024
+            },
+            {
+                id: 3,
+                title: 'Física - Mecânica e Termodinâmica',
+                author: 'Prof. Roberto Costa',
+                category: 'ciências',
+                icon: '⚛️',
+                description: 'Conceitos fundamentais de física com foco em mecânica, termodinâmica e aplicações práticas.',
+                pages: 380,
+                year: 2023
+            },
+            {
+                id: 4,
+                title: 'Química Orgânica Descomplicada',
+                author: 'Profa. Marina Lima',
+                category: 'ciências',
+                icon: '🧪',
+                description: 'Química orgânica explicada de forma simples e objetiva com macetes para memorização.',
+                pages: 320,
+                year: 2024
+            },
+            {
+                id: 5,
+                title: 'Literatura Brasileira - Escolas Literárias',
+                author: 'Prof. Paulo Mendes',
+                category: 'português',
+                icon: '📖',
+                description: 'Panorama completo da literatura brasileira do romantismo ao modernismo com análise de obras.',
+                pages: 420,
+                year: 2023
+            },
+            {
+                id: 6,
+                title: 'História do Brasil - República',
+                author: 'Prof. Juliana Rocha',
+                category: 'humanas',
+                icon: '🏛️',
+                description: 'Análise detalhada da história republicana brasileira com foco em questões sociais e políticas.',
+                pages: 390,
+                year: 2024
+            },
+            {
+                id: 7,
+                title: 'Geografia - Geopolítica Mundial',
+                author: 'Prof. Ricardo Alves',
+                category: 'humanas',
+                icon: '🌍',
+                description: 'Entenda os conflitos geopolíticos, blocos econômicos e questões ambientais globais.',
+                pages: 350,
+                year: 2024
+            },
+            {
+                id: 8,
+                title: 'Gramática Aplicada ao ENEM',
+                author: 'Profa. Beatriz Dias',
+                category: 'português',
+                icon: '📝',
+                description: 'Gramática contextualizada com exercícios focados no estilo ENEM de cobrança.',
+                pages: 300,
+                year: 2023
+            },
+            {
+                id: 9,
+                title: 'Biologia - Ecologia e Evolução',
+                author: 'Prof. Fernando Gomes',
+                category: 'ciências',
+                icon: '🌱',
+                description: 'Conceitos de ecologia, evolução e biodiversidade com exemplos da fauna e flora brasileira.',
+                pages: 340,
+                year: 2024
+            },
+            {
+                id: 10,
+                title: 'Interpretação de Textos - Técnicas',
+                author: 'Profa. Carla Mendes',
+                category: 'português',
+                icon: '🔍',
+                description: 'Estratégias eficazes para interpretar textos de todos os gêneros cobrados no ENEM.',
+                pages: 260,
+                year: 2024
+            },
+            {
+                id: 11,
+                title: 'Filosofia e Sociologia para o ENEM',
+                author: 'Prof. Miguel Santos',
+                category: 'humanas',
+                icon: '🤔',
+                description: 'Principais filósofos e teorias sociológicas com aplicação em questões atuais.',
+                pages: 310,
+                year: 2023
+            },
+            {
+                id: 12,
+                title: 'Geometria Plana e Espacial',
+                author: 'Prof. André Costa',
+                category: 'matemática',
+                icon: '📏',
+                description: 'Todos os conceitos de geometria com fórmulas, demonstrações e exercícios práticos.',
+                pages: 280,
+                year: 2024
+            },
+            {
+                id: 13,
+                title: 'Inglês - Reading Comprehension',
+                author: 'Prof. Michael Brown',
+                category: 'português',
+                icon: '🇬🇧',
+                description: 'Estratégias de leitura e interpretação de textos em inglês para o ENEM.',
+                pages: 220,
+                year: 2024
+            },
+            {
+                id: 14,
+                title: 'Atualidades 2024/2025',
+                author: 'Equipe Editorial',
+                category: 'humanas',
+                icon: '📰',
+                description: 'Principais acontecimentos mundiais e nacionais relevantes para o ENEM.',
+                pages: 250,
+                year: 2024
+            },
+            {
+                id: 15,
+                title: 'Estatística e Probabilidade',
+                author: 'Profa. Luiza Ferreira',
+                category: 'matemática',
+                icon: '📊',
+                description: 'Conceitos de estatística descritiva, probabilidade e análise de dados.',
+                pages: 290,
+                year: 2023
+            },
+            {
+                id: 16,
+                title: 'Funções - Do Básico ao Avançado',
+                author: 'Prof. Diego Oliveira',
+                category: 'matemática',
+                icon: '📈',
+                description: 'Estudo completo de funções: afim, quadrática, exponencial, logarítmica e trigonométrica.',
+                pages: 360,
+                year: 2024
+            },
+            {
+                id: 17,
+                title: 'Conectivos e Coesão Textual',
+                author: 'Profa. Patricia Nunes',
+                category: 'redação',
+                icon: '🔗',
+                description: 'Guia prático de conectivos e mecanismos de coesão para melhorar sua redação.',
+                pages: 180,
+                year: 2024
+            },
+            {
+                id: 18,
+                title: 'Eletromagnetismo Simplificado',
+                author: 'Prof. Marcelo Santos',
+                category: 'ciências',
+                icon: '⚡',
+                description: 'Eletricidade, magnetismo e ondas eletromagnéticas com aplicações práticas.',
+                pages: 320,
+                year: 2023
+            }
+        ];
+
+        let currentCategory = 'todas';
+
+        function renderBooks(booksToRender = ebooks) {
+            const grid = document.getElementById('booksGrid');
+            
+            if (booksToRender.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results" style="grid-column: 1 / -1;">
+                        <h2>📚 Nenhum livro encontrado</h2>
+                        <p>Tente buscar com outros termos ou selecione outra categoria.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = booksToRender.map(book => `
+                <div class="book-card" onclick="openBook(${book.id})">
+                    <div class="book-cover" style="background: linear-gradient(135deg, ${getRandomGradient()});">
+                        ${book.icon}
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-author">por ${book.author}</div>
+                        <span class="book-category">${book.category}</span>
+                        <div class="book-description">${book.description}</div>
+                        <div style="color: #999; font-size: 0.85em; margin-bottom: 15px;">
+                            📄 ${book.pages} páginas • ${book.year}
+                        </div>
+                        <div class="book-actions">
+                            <button class="btn-read" onclick="event.stopPropagation(); openBook(${book.id})">📖 Ler</button>
+                            <button class="btn-download" onclick="event.stopPropagation(); downloadBook(${book.id})">⬇️ Baixar</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getRandomGradient() {
+            const gradients = [
+                '#667eea 0%, #764ba2 100%',
+                '#f093fb 0%, #f5576c 100%',
+                '#43e97b 0%, #38f9d7 100%',
+                '#fa709a 0%, #fee140 100%',
+                '#30cfd0 0%, #330867 100%',
+                '#a8edea 0%, #fed6e3 100%'
+            ];
+            return gradients[Math.floor(Math.random() * gradients.length)];
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // Atualizar botões ativos
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filtrar livros
+            if (category === 'todas') {
+                renderBooks(ebooks);
+            } else {
+                const filtered = ebooks.filter(book => book.category === category);
+                renderBooks(filtered);
+            }
+        }
+
+        function searchBooks() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = ebooks;
+            
+            // Filtrar por categoria
+            if (currentCategory !== 'todas') {
+                filtered = filtered.filter(book => book.category === currentCategory);
+            }
+            
+            // Filtrar por termo de busca
+            if (searchTerm) {
+                filtered = filtered.filter(book => 
+                    book.title.toLowerCase().includes(searchTerm) ||
+                    book.author.toLowerCase().includes(searchTerm) ||
+                    book.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderBooks(filtered);
+        }
+
+        function openBook(bookId) {
+            const book = ebooks.find(b => b.id === bookId);
+            const modal = document.getElementById('bookModal');
+            const content = document.getElementById('modalBookContent');
+            
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div style="font-size: 5em; margin-bottom: 20px;">${book.icon}</div>
+                    <h2 style="color: #f5576c; margin-bottom: 10px;">${book.title}</h2>
+                    <p style="color: #666; font-size: 1.1em;">por ${book.author}</p>
+                    <span class="book-category">${book.category}</span>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-bottom: 25px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">📋 Sobre o livro</h3>
+                    <p style="line-height: 1.8; color: #555;">${book.description}</p>
+                    <div style="margin-top: 20px; color: #666;">
+                        <p>📄 <strong>${book.pages}</strong> páginas</p>
+                        <p>📅 Ano: <strong>${book.year}</strong></p>
+                    </div>
+                </div>
+                
+                <div style="background: #fff3cd; padding: 20px; border-radius: 15px; border-left: 4px solid #ffc107; margin-bottom: 25px;">
+                    <h4 style="color: #856404; margin-bottom: 10px;">💡 Visualização do Ebook</h4>
+                    <p style="color: #856404;">
+                        Este é um sistema demonstrativo. Em uma implementação real, aqui seria exibido o visualizador 
+                        de PDF ou e-reader para leitura do conteúdo completo do ebook.
+                    </p>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button onclick="downloadBook(${book.id})" style="flex: 1; padding: 15px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: bold;">
+                        ⬇️ Baixar Ebook
+                    </button>
+                    <button onclick="closeModal()" style="flex: 1; padding: 15px; background: #6c757d; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: bold;">
+                        Fechar
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('bookModal').classList.remove('active');
+        }
+
+        function downloadBook(bookId) {
+            const book = ebooks.find(b => b.id === bookId);
+            alert(`📥 Download iniciado!\n\n"${book.title}"\n\nEm uma implementação real, o arquivo PDF seria baixado automaticamente.`);
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('bookModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Carregar livros ao iniciar
+        renderBooks();
+    </script>
+</body>
+</html>

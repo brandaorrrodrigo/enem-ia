@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos e Preços - Sistema ENEM Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+        
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.4em;
+            opacity: 0.95;
+        }
+        
+        .toggle-container {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .toggle-button {
+            background: white;
+            border-radius: 50px;
+            padding: 8px;
+            display: inline-flex;
+            gap: 5px;
+        }
+        
+        .toggle-option {
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-option.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 35px;
+            margin-bottom: 60px;
+        }
+        
+        .plan-card {
+            background: white;
+            border-radius: 25px;
+            padding: 45px;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+        
+        .plan-card.popular {
+            border: 5px solid #43e97b;
+            transform: scale(1.05);
+        }
+        
+        .plan-card.popular:hover {
+            transform: scale(1.08) translateY(-15px);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.95em;
+            box-shadow: 0 5px 20px rgba(67, 233, 123, 0.4);
+        }
+        
+        .plan-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .plan-name {
+            font-size: 2.2em;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .plan-price {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .price-value {
+            font-size: 3.5em;
+            color: #667eea;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
+        .price-period {
+            font-size: 1.1em;
+            color: #666;
+        }
+        
+        .economy-badge {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #d84315;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        
+        .plan-description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .plan-features li {
+            padding: 14px 10px;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 1.08em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-icon {
+            font-size: 1.3em;
+            min-width: 25px;
+        }
+        
+        .btn-assinar {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 35px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .btn-assinar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+        
+        .btn-assinar.popular-btn {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            font-size: 1.4em;
+            padding: 22px;
+        }
+        
+        .btn-assinar.popular-btn:hover {
+            box-shadow: 0 15px 40px rgba(67, 233, 123, 0.5);
+        }
+        
+        .faq-section {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            margin-top: 60px;
+        }
+        
+        .faq-section h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .faq-item {
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 25px;
+        }
+        
+        .faq-question {
+            font-size: 1.3em;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.8;
+            padding-left: 20px;
+        }
+        
+        .guarantee-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe5a1 100%);
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .guarantee-box h3 {
+            color: #856404;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .guarantee-box p {
+            color: #856404;
+            font-size: 1.2em;
+            line-height: 1.7;
+        }
+        
+        .comparison-table {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            margin: 50px 0;
+            overflow-x: auto;
+        }
+        
+        .comparison-table h2 {
+            color: #667eea;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.3em;
+        }
+        
+        td {
+            font-size: 1.1em;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5em; }
+            .plans-grid { grid-template-columns: 1fr; }
+            .plan-card.popular { transform: scale(1); }
+            .faq-section, .comparison-table { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Escolha seu Plano</h1>
+            <p>Invista no seu futuro com o melhor sistema de preparação para o ENEM</p>
+        </div>
+
+        <!-- Toggle Mensal/Anual -->
+        <div class="toggle-container">
+            <div class="toggle-button">
+                <button class="toggle-option active" onclick="togglePricing('mensal')">Mensal</button>
+                <button class="toggle-option" onclick="togglePricing('anual')">Anual (economize 17%)</button>
+            </div>
+        </div>
+
+        <!-- Grid de Planos -->
+        <div class="plans-grid" id="plansGrid">
+            <!-- Plano Gratuito -->
+            <div class="plan-card">
+                <div class="plan-icon">🆓</div>
+                <div class="plan-name">Gratuito</div>
+                <div class="plan-price">
+                    <div class="price-value">R$ 0</div>
+                    <div class="price-period">para sempre</div>
+                </div>
+                <div class="plan-description">
+                    Experimente o sistema e veja como podemos te ajudar!
+                </div>
+                <ul class="plan-features">
+                    <li><span class="feature-icon">✅</span> 2 simulados por mês</li>
+                    <li><span class="feature-icon">✅</span> 10 questões por dia</li>
+                    <li><span class="feature-icon">✅</span> ChatBot básico (20 msgs/dia)</li>
+                    <li><span class="feature-icon">✅</span> Acesso à biblioteca (amostra)</li>
+                    <li><span class="feature-icon">❌</span> Correção de redação</li>
+                    <li><span class="feature-icon">❌</span> Estatísticas avançadas</li>
+                    <li><span class="feature-icon">❌</span> Simulados ilimitados</li>
+                </ul>
+                <button class="btn-assinar" onclick="cadastrar('free')">
+                    Começar Grátis
+                </button>
+            </div>
+
+            <!-- Plano Mensal -->
+            <div class="plan-card popular">
+                <div class="popular-badge">⭐ MAIS POPULAR</div>
+                <div class="plan-icon">🚀</div>
+                <div class="plan-name">Mensal</div>
+                <div class="plan-price">
+                    <div class="price-value">R$ 29,90</div>
+                    <div class="price-period">por mês</div>
+                </div>
+                <div class="plan-description">
+                    Acesso completo para turbinar seus estudos!
+                </div>
+                <ul class="plan-features">
+                    <li><span class="feature-icon">✅</span> <strong>Simulados ilimitados</strong></li>
+                    <li><span class="feature-icon">✅</span> <strong>Questões ilimitadas</strong></li>
+                    <li><span class="feature-icon">✅</span> <strong>ChatBot ilimitado</strong></li>
+                    <li><span class="feature-icon">✅</span> Biblioteca completa (150+ ebooks)</li>
+                    <li><span class="feature-icon">✅</span> 10 correções de redação/mês</li>
+                    <li><span class="feature-icon">✅</span> Estatísticas detalhadas</li>
+                    <li><span class="feature-icon">✅</span> Suporte prioritário</li>
+                    <li><span class="feature-icon">✅</span> Atualizações semanais</li>
+                </ul>
+                <button class="btn-assinar popular-btn" onclick="assinar('mensal')">
+                    Assinar Agora
+                </button>
+            </div>
+
+            <!-- Plano Anual -->
+            <div class="plan-card">
+                <div class="plan-icon">👑</div>
+                <div class="plan-name">Anual</div>
+                <div class="plan-price">
+                    <div class="price-value">R$ 297</div>
+                    <div class="price-period">por ano</div>
+                </div>
+                <div class="economy-badge">💰 Economize R$ 61,80 (17%)</div>
+                <div class="plan-description">
+                    O melhor investimento para sua aprovação!
+                </div>
+                <ul class="plan-features">
+                    <li><span class="feature-icon">✅</span> <strong>Tudo do plano mensal</strong></li>
+                    <li><span class="feature-icon">✅</span> <strong>Correções ILIMITADAS</strong></li>
+                    <li><span class="feature-icon">✅</span> Material extra exclusivo</li>
+                    <li><span class="feature-icon">✅</span> Certificado de conclusão</li>
+                    <li><span class="feature-icon">✅</span> Acesso a webinários</li>
+                    <li><span class="feature-icon">✅</span> Mentoria em grupo mensal</li>
+                    <li><span class="feature-icon">🎁</span> <strong>1 mês GRÁTIS</strong></li>
+                    <li><span class="feature-icon">🎁</span> <strong>Bônus especiais</strong></li>
+                </ul>
+                <button class="btn-assinar" onclick="assinar('anual')">
+                    Assinar Agora
+                </button>
+            </div>
+        </div>
+
+        <!-- Garantia -->
+        <div class="guarantee-box">
+            <h3>🛡️ Garantia de 7 Dias</h3>
+            <p>
+                Não gostou? Devolvemos 100% do seu dinheiro sem perguntas.<br>
+                Você tem 7 dias para testar sem riscos!
+            </p>
+        </div>
+
+        <!-- Tabela Comparativa -->
+        <div class="comparison-table">
+            <h2>📊 Comparação Detalhada</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recurso</th>
+                        <th>Gratuito</th>
+                        <th>Mensal</th>
+                        <th>Anual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Simulados/mês</td>
+                        <td>2</td>
+                        <td>Ilimitado</td>
+                        <td>Ilimitado</td>
+                    </tr>
+                    <tr>
+                        <td>Questões/dia</td>
+                        <td>10</td>
+                        <td>Ilimitado</td>
+                        <td>Ilimitado</td>
+                    </tr>
+                    <tr>
+                        <td>ChatBot msgs/dia</td>
+                        <td>20</td>
+                        <td>Ilimitado</td>
+                        <td>Ilimitado</td>
+                    </tr>
+                    <tr>
+                        <td>Biblioteca ebooks</td>
+                        <td>Amostra</td>
+                        <td>Completa</td>
+                        <td>Completa + Extra</td>
+                    </tr>
+                    <tr>
+                        <td>Correção redação</td>
+                        <td>❌</td>
+                        <td>10/mês</td>
+                        <td>Ilimitado</td>
+                    </tr>
+                    <tr>
+                        <td>Estatísticas</td>
+                        <td>Básicas</td>
+                        <td>Avançadas</td>
+                        <td>Avançadas</td>
+                    </tr>
+                    <tr>
+                        <td>Suporte</td>
+                        <td>Email</td>
+                        <td>Prioritário</td>
+                        <td>VIP + Mentoria</td>
+                    </tr>
+                    <tr>
+                        <td>Certificado</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq-section">
+            <h2>❓ Perguntas Frequentes</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Como funciona o pagamento?</div>
+                <div class="faq-answer">
+                    Aceitamos cartão de crédito e PIX através do Stripe (internacional) ou Mercado Pago (Brasil). 
+                    O pagamento é 100% seguro e você recebe acesso imediato após a confirmação.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Posso cancelar a qualquer momento?</div>
+                <div class="faq-answer">
+                    Sim! Você pode cancelar sua assinatura a qualquer momento. 
+                    Seu acesso continua até o final do período pago.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">A biblioteca de ebooks é realmente completa?</div>
+                <div class="faq-answer">
+                    Sim! Temos mais de 150 ebooks de todas as disciplinas do ENEM: 
+                    Matemática, Física, Química, Biologia, História, Geografia, Português, Literatura e mais!
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Como funciona a correção de redação?</div>
+                <div class="faq-answer">
+                    Nossa IA avalia sua redação seguindo os critérios do ENEM. 
+                    Você recebe nota em cada competência, pontos de melhoria e sugestões detalhadas.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">O que são os bônus do plano anual?</div>
+                <div class="faq-answer">
+                    Inclui: ebooks exclusivos, resumos premium, planner de estudos personalizado, 
+                    acesso a webinários gravados e mentoria em grupo mensal com especialistas.
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="index.html" class="back-btn">← Voltar ao Início</a>
+        </div>
+    </div>
+
+    <script>
+        function togglePricing(type) {
+            // Atualizar botões
+            document.querySelectorAll('.toggle-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Aqui você pode atualizar os preços se tiver preço anual diferente
+            // Por enquanto, mantém os mesmos
+        }
+
+        function cadastrar(plan) {
+            // Redirecionar para página de cadastro
+            window.location.href = `cadastro.html?plan=${plan}`;
+        }
+
+        function assinar(plan) {
+            // Verificar se usuário está logado
+            const isLoggedIn = localStorage.getItem('userEmail');
+            
+            if (!isLoggedIn) {
+                // Redirecionar para login com redirect
+                window.location.href = `login.html?redirect=planos&plan=${plan}`;
+                return;
+            }
+            
+            // Se já está logado, processar pagamento
+            processarPagamento(plan);
+        }
+
+        async function processarPagamento(plan) {
+            const API_URL = 'SUA_API_URL';  // Configurar depois
+            const userEmail = localStorage.getItem('userEmail');
+            
+            try {
+                // Mostrar loading
+                event.target.disabled = true;
+                event.target.textContent = 'Processando...';
+                
+                // Criar sessão de checkout
+                const response = await fetch(`${API_URL}/create-checkout-session`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ plan, email: userEmail })
+                });
+                
+                const data = await response.json();
+                
+                // Redirecionar para Stripe
+                window.location.href = data.checkout_url;
+                
+            } catch (error) {
+                alert('Erro ao processar pagamento. Tente novamente.');
+                console.error(error);
+                event.target.disabled = false;
+                event.target.textContent = 'Assinar Agora';
+            }
+        }
+
+        // Destacar plano se vier de parâmetro URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const highlightPlan = urlParams.get('highlight');
+        if (highlightPlan) {
+            setTimeout(() => {
+                const planCard = document.querySelector(`[data-plan="${highlightPlan}"]`);
+                if (planCard) {
+                    planCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    planCard.style.animation = 'pulse 1s ease 3';
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>

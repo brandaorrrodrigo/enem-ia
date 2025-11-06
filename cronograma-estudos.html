@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma de Estudos - ENEM Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 50px;
+        }
+
+        h1 {
+            color: #43e97b;
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3em;
+            margin-bottom: 50px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .info-box h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 1.8em;
+            margin: 40px 0 25px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .week-schedule {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #43e97b;
+        }
+
+        .week-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .day-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .day-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #43e97b;
+        }
+
+        .day-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #43e97b;
+        }
+
+        .time-slot {
+            display: flex;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .time {
+            min-width: 100px;
+            font-weight: bold;
+            color: #43e97b;
+        }
+
+        .activity {
+            color: #555;
+            flex: 1;
+        }
+
+        .dicas-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .dicas-box h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .dicas-box ul {
+            list-style: none;
+            line-height: 2.2;
+        }
+
+        .dicas-box li {
+            padding-left: 30px;
+            position: relative;
+            color: #555;
+        }
+
+        .dicas-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #43e97b;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .meta-semanal {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .meta-semanal h4 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .disciplinas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .disciplina-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .disciplina-card h5 {
+            color: #43e97b;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        .horas {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #6c757d;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            font-size: 1.1em;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .time-slot {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📅 Cronograma de Estudos ENEM Pro</h1>
+        <p class="subtitle">Planeje suas semanas e maximize seu aprendizado</p>
+
+        <div class="info-box">
+            <h2>🎯 Sobre Este Cronograma</h2>
+            <p>
+                Este é um cronograma de estudos otimizado para preparação ao ENEM. 
+                Ele distribui as disciplinas de forma equilibrada ao longo da semana, 
+                garantindo tempo para revisão e descanso. Adapte conforme sua necessidade!
+            </p>
+        </div>
+
+        <!-- Semana Padrão -->
+        <div class="section-title">
+            <span>📚</span>
+            Cronograma Semanal Padrão
+        </div>
+
+        <div class="week-schedule">
+            <div class="week-title">Semana Tipo - Ciclo de Estudos</div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <span style="font-size: 2em;">📖</span>
+                    <span class="day-name">SEGUNDA-FEIRA</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">07:00 - 09:00</span>
+                    <span class="activity">Português (Gramática e Interpretação)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:00 - 09:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:30 - 11:30</span>
+                    <span class="activity">Literatura Brasileira</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">14:00 - 16:00</span>
+                    <span class="activity">História (Brasil Colonial e Imperial)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:00 - 16:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:30 - 18:00</span>
+                    <span class="activity">Exercícios e Revisão</span>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <span style="font-size: 2em;">🔢</span>
+                    <span class="day-name">TERÇA-FEIRA</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">07:00 - 09:00</span>
+                    <span class="activity">Matemática (Álgebra e Funções)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:00 - 09:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:30 - 11:30</span>
+                    <span class="activity">Física (Mecânica)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">14:00 - 16:00</span>
+                    <span class="activity">Química (Orgânica e Inorgânica)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:00 - 16:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:30 - 18:00</span>
+                    <span class="activity">Exercícios de Matemática</span>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <span style="font-size: 2em;">🌍</span>
+                    <span class="day-name">QUARTA-FEIRA</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">07:00 - 09:00</span>
+                    <span class="activity">Geografia (Geopolítica e Meio Ambiente)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:00 - 09:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:30 - 11:30</span>
+                    <span class="activity">Filosofia e Sociologia</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">14:00 - 16:00</span>
+                    <span class="activity">Biologia (Ecologia e Evolução)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:00 - 16:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:30 - 18:00</span>
+                    <span class="activity">✍️ Redação</span>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <span style="font-size: 2em;">🔬</span>
+                    <span class="day-name">QUINTA-FEIRA</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">07:00 - 09:00</span>
+                    <span class="activity">Inglês (Reading e Vocabulário)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:00 - 09:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:30 - 11:30</span>
+                    <span class="activity">História (República e Atualidades)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">14:00 - 16:00</span>
+                    <span class="activity">Matemática (Geometria)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:00 - 16:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:30 - 18:00</span>
+                    <span class="activity">Física (Eletromagnetismo)</span>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <span style="font-size: 2em;">📝</span>
+                    <span class="day-name">SEXTA-FEIRA</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">07:00 - 09:00</span>
+                    <span class="activity">Revisão Geral da Semana</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:00 - 09:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">09:30 - 11:30</span>
+                    <span class="activity">Questões de Provas Anteriores</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">14:00 - 16:00</span>
+                    <span class="activity">Temas de Atualidades para Redação</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:00 - 16:30</span>
+                    <span class="activity">☕ Intervalo</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">16:30 - 18:00</span>
+                    <span class="activity">Mapas Mentais e Resumos</span>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <span style="font-size: 2em;">🎯</span>
+                    <span class="day-name">SÁBADO</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">08:00 - 13:00</span>
+                    <span class="activity">🎓 SIMULADO SEMANAL (45 questões + Redação)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">15:00 - 17:00</span>
+                    <span class="activity">Correção do Simulado e Análise de Erros</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">17:00 - 18:00</span>
+                    <span class="activity">Atividade Física / Lazer</span>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <span style="font-size: 2em;">😴</span>
+                    <span class="day-name">DOMINGO</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">10:00 - 12:00</span>
+                    <span class="activity">Revisão Leve (temas que você gosta)</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">12:00 - 18:00</span>
+                    <span class="activity">🌟 DESCANSO / LAZER / FAMÍLIA</span>
+                </div>
+                <div class="time-slot">
+                    <span class="time">18:00 - 19:00</span>
+                    <span class="activity">Planejamento da próxima semana</span>
+                </div>
+            </div>
+
+            <div class="meta-semanal">
+                <h4>🎯 Meta Semanal de Estudos</h4>
+                <p><strong>Total: 40-45 horas de estudo efetivo</strong></p>
+                <p>Incluindo simulados, revisões e descanso adequado</p>
+            </div>
+        </div>
+
+        <!-- Distribuição por Disciplina -->
+        <div class="section-title">
+            <span>📊</span>
+            Distribuição Semanal por Disciplina
+        </div>
+
+        <div class="disciplinas-grid">
+            <div class="disciplina-card">
+                <h5>Matemática</h5>
+                <div class="horas">8h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Português</h5>
+                <div class="horas">6h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>História</h5>
+                <div class="horas">4h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Geografia</h5>
+                <div class="horas">4h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Física</h5>
+                <div class="horas">4h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Química</h5>
+                <div class="horas">4h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Biologia</h5>
+                <div class="horas">4h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Redação</h5>
+                <div class="horas">3h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Inglês</h5>
+                <div class="horas">2h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Filosofia/Sociologia</h5>
+                <div class="horas">2h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Revisões</h5>
+                <div class="horas">4h</div>
+                <p>por semana</p>
+            </div>
+            <div class="disciplina-card">
+                <h5>Simulado</h5>
+                <div class="horas">5h</div>
+                <p>por semana</p>
+            </div>
+        </div>
+
+        <!-- Dicas -->
+        <div class="dicas-box">
+            <h3>💡 Dicas para Seguir o Cronograma</h3>
+            <ul>
+                <li>Acorde sempre no mesmo horário para criar uma rotina</li>
+                <li>Respeite os intervalos - eles são essenciais para a absorção do conteúdo</li>
+                <li>Use a técnica Pomodoro: 25 minutos de foco + 5 minutos de descanso</li>
+                <li>Desligue o celular ou coloque no modo "Não Perturbe" durante os estudos</li>
+                <li>Mantenha um ambiente de estudo organizado e bem iluminado</li>
+                <li>Hidrate-se bem e faça refeições saudáveis</li>
+                <li>Durma pelo menos 7-8 horas por noite</li>
+                <li>Não acumule matérias - siga o cronograma rigorosamente</li>
+                <li>Se perder um dia, NÃO tente compensar estudando tudo no dia seguinte</li>
+                <li>Ajuste o cronograma conforme suas necessidades individuais</li>
+                <li>Celebre pequenas conquistas ao longo do caminho</li>
+                <li>Use o domingo para verdadeiro descanso mental</li>
+            </ul>
+        </div>
+
+        <div class="info-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <h2 style="color: white;">⚡ Lembre-se!</h2>
+            <p style="color: white;">
+                A consistência é mais importante que a intensidade. É melhor estudar 
+                4 horas por dia todos os dias do que estudar 12 horas em um único dia. 
+                Seu cérebro precisa de tempo para consolidar o aprendizado!
+            </p>
+        </div>
+
+        <a href="index.html" class="back-btn">← Voltar ao Menu Principal</a>
+    </div>
+</body>
+</html>

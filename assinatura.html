@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos e Assinatura - Sistema ENEM Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .plan-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+        }
+        .plan-card.popular {
+            border: 4px solid #f5576c;
+            transform: scale(1.05);
+        }
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            right: 30px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .plan-name {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .plan-description {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .plan-price {
+            font-size: 3em;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .plan-price small {
+            font-size: 0.4em;
+            color: #999;
+        }
+        .plan-period {
+            color: #999;
+            margin-bottom: 30px;
+        }
+        .features-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        .features-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        .check-icon {
+            color: #43e97b;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .cross-icon {
+            color: #dc3545;
+            font-size: 1.2em;
+        }
+        .btn-subscribe {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-subscribe.free {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-subscribe.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-subscribe.vip {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .btn-subscribe:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .comparison-table {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        .comparison-table h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.1em;
+        }
+        td:first-child {
+            text-align: left;
+            font-weight: 500;
+        }
+        .payment-methods {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        .payment-methods h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .payment-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .payment-icon {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-radius: 12px;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+        }
+        .payment-icon:hover {
+            background: #e9ecef;
+            transform: translateY(-5px);
+        }
+        .faq-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        .faq-section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .faq-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 20px;
+        }
+        .faq-question {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-question:hover {
+            color: #667eea;
+        }
+        .faq-answer {
+            color: #666;
+            line-height: 1.6;
+            display: none;
+            padding-top: 10px;
+        }
+        .faq-answer.show {
+            display: block;
+        }
+        .guarantee-box {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .guarantee-box h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        .back-btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+            .plan-card.popular {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⭐ Escolha Seu Plano</h1>
+            <p>Invista na sua aprovação com o melhor sistema de preparação para o ENEM</p>
+        </div>
+
+        <!-- Planos -->
+        <div class="plans-grid">
+            <!-- Plano Gratuito -->
+            <div class="plan-card">
+                <div class="plan-name">Gratuito</div>
+                <div class="plan-description">Perfeito para começar seus estudos</div>
+                <div class="plan-price">
+                    R$ 0
+                    <small>/mês</small>
+                </div>
+                <div class="plan-period">Para sempre gratuito</div>
+                
+                <ul class="features-list">
+                    <li><span class="check-icon">✓</span> Acesso ao cronograma de estudos</li>
+                    <li><span class="check-icon">✓</span> Sistema de redação básico</li>
+                    <li><span class="check-icon">✓</span> ChatBot (10 perguntas/dia)</li>
+                    <li><span class="check-icon">✓</span> 5 questões geradas IA/dia</li>
+                    <li><span class="check-icon">✓</span> Biblioteca (visualização limitada)</li>
+                    <li><span class="cross-icon">✗</span> Simulados completos</li>
+                    <li><span class="cross-icon">✗</span> Videoaulas</li>
+                    <li><span class="cross-icon">✗</span> Correção de redação</li>
+                    <li><span class="cross-icon">✗</span> Download de materiais</li>
+                </ul>
+                
+                <button class="btn-subscribe free" onclick="selecionarPlano('gratuito')">
+                    Continuar Gratuito
+                </button>
+            </div>
+
+            <!-- Plano Premium (Popular) -->
+            <div class="plan-card popular">
+                <span class="popular-badge">🔥 MAIS POPULAR</span>
+                <div class="plan-name">Premium</div>
+                <div class="plan-description">Para quem quer resultados reais</div>
+                <div class="plan-price">
+                    R$ 29,90
+                    <small>/mês</small>
+                </div>
+                <div class="plan-period">ou R$ 299/ano (economize R$ 59)</div>
+                
+                <ul class="features-list">
+                    <li><span class="check-icon">✓</span> <strong>TUDO do plano Gratuito</strong></li>
+                    <li><span class="check-icon">✓</span> ChatBot ilimitado</li>
+                    <li><span class="check-icon">✓</span> Questões IA ilimitadas</li>
+                    <li><span class="check-icon">✓</span> Simulados completos semanais</li>
+                    <li><span class="check-icon">✓</span> Todas as videoaulas</li>
+                    <li><span class="check-icon">✓</span> Download de todos ebooks</li>
+                    <li><span class="check-icon">✓</span> Correção automática de redação</li>
+                    <li><span class="check-icon">✓</span> Análise de desempenho</li>
+                    <li><span class="check-icon">✓</span> Suporte prioritário</li>
+                </ul>
+                
+                <button class="btn-subscribe premium" onclick="selecionarPlano('premium')">
+                    ⭐ Assinar Premium
+                </button>
+            </div>
+
+            <!-- Plano VIP -->
+            <div class="plan-card">
+                <div class="plan-name">VIP</div>
+                <div class="plan-description">Preparação completa com mentoria</div>
+                <div class="plan-price">
+                    R$ 79,90
+                    <small>/mês</small>
+                </div>
+                <div class="plan-period">ou R$ 799/ano (economize R$ 159)</div>
+                
+                <ul class="features-list">
+                    <li><span class="check-icon">✓</span> <strong>TUDO do plano Premium</strong></li>
+                    <li><span class="check-icon">✓</span> 4 redações corrigidas/mês</li>
+                    <li><span class="check-icon">✓</span> Mentoria individual mensal</li>
+                    <li><span class="check-icon">✓</span> Plano de estudos personalizado</li>
+                    <li><span class="check-icon">✓</span> Grupo VIP exclusivo</li>
+                    <li><span class="check-icon">✓</span> Lives semanais com professores</li>
+                    <li><span class="check-icon">✓</span> Material impresso em casa</li>
+                    <li><span class="check-icon">✓</span> Garantia de aprovação*</li>
+                    <li><span class="check-icon">✓</span> Suporte 24/7</li>
+                </ul>
+                
+                <button class="btn-subscribe vip" onclick="selecionarPlano('vip')">
+                    💎 Assinar VIP
+                </button>
+            </div>
+        </div>
+
+        <!-- Garantia -->
+        <div class="guarantee-box">
+            <h3>🛡️ Garantia de 7 Dias</h3>
+            <p>Experimente sem riscos! Se não gostar, devolvemos 100% do seu dinheiro em até 7 dias.</p>
+        </div>
+
+        <!-- Tabela Comparativa -->
+        <div class="comparison-table">
+            <h2>📊 Comparação Detalhada dos Planos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recurso</th>
+                        <th>Gratuito</th>
+                        <th>Premium</th>
+                        <th>VIP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Questões IA por dia</td>
+                        <td>5</td>
+                        <td>Ilimitado</td>
+                        <td>Ilimitado</td>
+                    </tr>
+                    <tr>
+                        <td>ChatBot</td>
+                        <td>10/dia</td>
+                        <td>Ilimitado</td>
+                        <td>Ilimitado</td>
+                    </tr>
+                    <tr>
+                        <td>Simulados completos</td>
+                        <td>❌</td>
+                        <td>Semanais</td>
+                        <td>Ilimitados</td>
+                    </tr>
+                    <tr>
+                        <td>Videoaulas</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>Download ebooks</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>Correção de redação</td>
+                        <td>❌</td>
+                        <td>Automática</td>
+                        <td>4 correções manuais/mês</td>
+                    </tr>
+                    <tr>
+                        <td>Mentoria individual</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>Mensal</td>
+                    </tr>
+                    <tr>
+                        <td>Suporte</td>
+                        <td>Email</td>
+                        <td>Prioritário</td>
+                        <td>24/7</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Métodos de Pagamento -->
+        <div class="payment-methods">
+            <h2>💳 Formas de Pagamento</h2>
+            <div class="payment-icons">
+                <div class="payment-icon">💳 Cartão de Crédito</div>
+                <div class="payment-icon">📱 Pix</div>
+                <div class="payment-icon">🏦 Boleto</div>
+                <div class="payment-icon">💰 PayPal</div>
+                <div class="payment-icon">🎫 Mercado Pago</div>
+            </div>
+            <p style="text-align: center; margin-top: 20px; color: #666;">
+                Pagamento 100% seguro | Processado por Stripe & Mercado Pago
+            </p>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq-section">
+            <h2>❓ Perguntas Frequentes</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(0)">
+                    Posso cancelar a qualquer momento?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer" id="faq-0">
+                    Sim! Você pode cancelar sua assinatura a qualquer momento sem taxas ou multas. O acesso continua até o final do período pago.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(1)">
+                    Como funciona a garantia de 7 dias?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer" id="faq-1">
+                    Se você não ficar satisfeito por qualquer motivo, basta solicitar o reembolso em até 7 dias após a compra. Devolvemos 100% do valor, sem perguntas.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(2)">
+                    Posso mudar de plano depois?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer" id="faq-2">
+                    Sim! Você pode fazer upgrade ou downgrade a qualquer momento. O valor é ajustado proporcionalmente.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(3)">
+                    O pagamento é recorrente?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer" id="faq-3">
+                    Sim, o pagamento é renovado automaticamente todos os meses (ou anualmente, se escolher o plano anual). Você pode cancelar a renovação quando quiser.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(4)">
+                    Tem desconto para estudantes?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer" id="faq-4">
+                    Sim! Estudantes de baixa renda com cadastro no CadÚnico têm 50% de desconto. Entre em contato pelo suporte para mais informações.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(5)">
+                    O que é a "Garantia de Aprovação" do plano VIP?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer" id="faq-5">
+                    Se você seguir 100% do plano de estudos personalizado, completar todos os simulados e não for aprovado, renovamos sua assinatura VIP gratuitamente por mais 6 meses.
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="index.html" class="back-btn">← Voltar ao Menu Principal</a>
+        </div>
+    </div>
+
+    <script>
+        function selecionarPlano(plano) {
+            if (plano === 'gratuito') {
+                localStorage.setItem('isPremium', 'false');
+                alert('✅ Você está no plano Gratuito!\n\nAproveite os recursos disponíveis e faça upgrade quando quiser.');
+                window.location.href = 'index.html';
+            } else {
+                // Em produção, isso redirecionaria para página de checkout real
+                // Exemplo: Stripe, Mercado Pago, PagSeguro, etc.
+                
+                const precos = {
+                    'premium': 'R$ 29,90',
+                    'vip': 'R$ 79,90'
+                };
+                
+                if (confirm(`Confirma a assinatura do plano ${plano.toUpperCase()} por ${precos[plano]}/mês?\n\n(Modo demonstração - em produção redirecionaria para pagamento real)`)) {
+                    // Simular sucesso de pagamento
+                    localStorage.setItem('isPremium', 'true');
+                    localStorage.setItem('plano', plano);
+                    
+                    alert('🎉 Pagamento aprovado!\n\nBem-vindo ao plano ' + plano.toUpperCase() + '!\n\nVocê agora tem acesso a todos os recursos premium.');
+                    window.location.href = 'index.html';
+                }
+            }
+        }
+
+        function toggleFaq(index) {
+            const answer = document.getElementById(`faq-${index}`);
+            answer.classList.toggle('show');
+        }
+
+        // Destacar plano atual do usuário
+        const planoAtual = localStorage.getItem('plano') || 'gratuito';
+        const isPremium = localStorage.getItem('isPremium') === 'true';
+        
+        if (isPremium) {
+            // Adicionar badge no plano atual
+            console.log('Usuário no plano:', planoAtual);
+        }
+    </script>
+</body>
+</html>

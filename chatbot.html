@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBot ENEM - Assistente Virtual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-header h1 {
+            font-size: 1.8em;
+        }
+
+        .chat-header .status {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: #f5f5f5;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.bot {
+            flex-direction: row;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            line-height: 1.6;
+        }
+
+        .message.bot .message-content {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .suggestions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .suggestion-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #1976d2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-btn:hover {
+            background: #1976d2;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .chat-input-area {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        #messageInput:focus {
+            border-color: #667eea;
+        }
+
+        #sendBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #sendBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 15px;
+            background: white;
+            border-radius: 18px;
+            width: fit-content;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+            gap: 5px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 10px 25px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quick-action-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .quick-action-card:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .quick-action-card h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+
+        .quick-action-card p {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                height: 100vh;
+                border-radius: 0;
+            }
+            .message-content {
+                max-width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-header">
+            <span style="font-size: 2em;">🤖</span>
+            <div>
+                <h1>ChatBot ENEM</h1>
+                <small>Assistente Virtual de Estudos</small>
+            </div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>Online</span>
+            </div>
+            <a href="index.html" class="back-btn">← Voltar</a>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Mensagem de boas-vindas -->
+            <div class="message bot">
+                <div class="message-avatar">🤖</div>
+                <div>
+                    <div class="message-content">
+                        <strong>Olá! 👋 Sou seu assistente virtual do ENEM!</strong><br><br>
+                        Estou aqui para ajudar você com dúvidas sobre:
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>Conteúdos das disciplinas</li>
+                            <li>Técnicas de estudo</li>
+                            <li>Dicas para a redação</li>
+                            <li>Informações sobre o ENEM</li>
+                            <li>Organização de estudos</li>
+                        </ul>
+                        Como posso te ajudar hoje?
+                    </div>
+                    <div class="quick-actions">
+                        <div class="quick-action-card" onclick="sendQuickMessage('Como fazer uma boa redação?')">
+                            <h4>✍️ Redação</h4>
+                            <p>Dicas para nota 1000</p>
+                        </div>
+                        <div class="quick-action-card" onclick="sendQuickMessage('Como organizar meus estudos?')">
+                            <h4>📅 Cronograma</h4>
+                            <p>Organize seu tempo</p>
+                        </div>
+                        <div class="quick-action-card" onclick="sendQuickMessage('Dicas de matemática')">
+                            <h4>🔢 Matemática</h4>
+                            <p>Conteúdos importantes</p>
+                        </div>
+                        <div class="quick-action-card" onclick="sendQuickMessage('Como lidar com ansiedade?')">
+                            <h4>🧘 Ansiedade</h4>
+                            <p>Controle seu estresse</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <div class="input-container">
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Digite sua mensagem..."
+                    onkeypress="handleKeyPress(event)"
+                >
+                <button id="sendBtn" onclick="sendMessage()">
+                    ➤
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de conhecimento do chatbot
+        const knowledgeBase = {
+            'redação': {
+                keywords: ['redação', 'redacão', 'escrever', 'texto', 'nota 1000', 'dissertação'],
+                response: `📝 **Dicas para uma redação nota 1000:**
+
+1. **Estrutura:** Introdução (7-8 linhas), 2 desenvolvimentos (7-8 linhas cada) e conclusão (7-8 linhas)
+
+2. **Introdução:** Contextualize o tema e apresente sua tese
+
+3. **Desenvolvimento:** Use argumentos bem fundamentados com dados, exemplos e repertório sociocultural
+
+4. **Conclusão:** Apresente proposta de intervenção completa com:
+   - Agente (quem vai fazer)
+   - Ação (o que será feito)
+   - Modo (como será feito)
+   - Finalidade (para quê)
+   - Detalhamento
+
+5. **Conectivos:** Use adequadamente (Portanto, Ademais, Entretanto, etc.)
+
+Quer ver exemplos práticos?`,
+                suggestions: ['Ver exemplo de introdução', 'Conectivos importantes', 'Proposta de intervenção']
+            },
+            'matemática': {
+                keywords: ['matemática', 'matematica', 'mat', 'cálculo', 'função', 'geometria', 'equação'],
+                response: `🔢 **Conteúdos mais cobrados em Matemática no ENEM:**
+
+1. **Funções** (15-20% das questões)
+   - Função afim, quadrática, exponencial
+   - Gráficos e análise
+
+2. **Geometria** (15-20%)
+   - Áreas e volumes
+   - Teorema de Pitágoras
+   - Trigonometria básica
+
+3. **Estatística e Probabilidade** (10-15%)
+   - Média, mediana, moda
+   - Gráficos e tabelas
+
+4. **Razão e Proporção** (10%)
+   - Regra de três
+   - Porcentagem
+
+5. **Álgebra** (10%)
+   - Equações do 1º e 2º grau
+
+**Dica:** Resolva muitas questões de provas anteriores!
+
+Quer dicas específicas de algum tópico?`,
+                suggestions: ['Dicas de funções', 'Como estudar geometria', 'Exercícios de estatística']
+            },
+            'cronograma': {
+                keywords: ['cronograma', 'organizar', 'estudos', 'rotina', 'planejamento', 'horário'],
+                response: `📅 **Como organizar seus estudos:**
+
+1. **Defina metas semanais** - O que você quer aprender nesta semana?
+
+2. **Divida o dia:**
+   - Manhã: Disciplinas que exigem mais raciocínio (Matemática, Física)
+   - Tarde: Leitura e interpretação (Português, História)
+   - Noite: Revisão leve
+
+3. **Técnica Pomodoro:**
+   - 25 min de foco intenso
+   - 5 min de descanso
+   - Repita 4 vezes, depois descanse 30 min
+
+4. **Faça intervalos regulares** - Seu cérebro precisa descansar!
+
+5. **Um dia de descanso por semana** - Essencial para consolidar o aprendizado
+
+6. **Simulados aos sábados** - Teste seu conhecimento semanalmente
+
+Quer ver um cronograma pronto?`,
+                suggestions: ['Ver cronograma completo', 'Técnica Pomodoro detalhada', 'Dicas de produtividade']
+            },
+            'ansiedade': {
+                keywords: ['ansiedade', 'estresse', 'nervoso', 'pressão', 'medo', 'preocupação', 'mental'],
+                response: `🧘 **Como lidar com ansiedade nos estudos:**
+
+1. **Técnicas de respiração:**
+   - Inspire por 4 segundos
+   - Segure por 4 segundos
+   - Expire por 4 segundos
+   - Repita 5 vezes
+
+2. **Exercício físico regular** - Libera endorfina e reduz cortisol
+
+3. **Sono adequado** - 7-8 horas por noite
+
+4. **Meditação/Mindfulness** - Apenas 10 min por dia já ajuda
+
+5. **Converse com alguém** - Família, amigos ou profissional
+
+6. **Pensamento positivo** - Substitua "não vou conseguir" por "vou me preparar bem"
+
+7. **Evite comparações** - Cada um tem seu próprio ritmo
+
+8. **Celebre pequenas conquistas** - Valorize seu progresso!
+
+Lembre-se: A ansiedade é normal, mas não pode te paralisar. Você é capaz! 💪
+
+Quer mais dicas específicas?`,
+                suggestions: ['Técnicas de relaxamento', 'Como dormir melhor', 'Alimentação anti-ansiedade']
+            },
+            'português': {
+                keywords: ['português', 'portugues', 'gramática', 'gramatica', 'literatura', 'interpretação'],
+                response: `📖 **Português no ENEM - Conteúdos essenciais:**
+
+1. **Interpretação de Textos** (40% das questões)
+   - Leia muito! Jornais, livros, revistas
+   - Identifique ideia principal
+   - Atenção aos detalhes
+
+2. **Gêneros Textuais**
+   - Crônica, notícia, artigo, charge, etc.
+   - Entenda função de cada gênero
+
+3. **Figuras de Linguagem**
+   - Metáfora, metonímia, ironia
+   - Aparecem muito em questões
+
+4. **Literatura Brasileira**
+   - Romantismo, Realismo, Modernismo
+   - Principais autores e obras
+
+5. **Gramática contextualizada**
+   - Crase, concordância, regência
+   - Sempre no contexto de um texto
+
+**Dica de ouro:** Leia a questão antes de ler o texto! Você saberá o que procurar.
+
+Quer dicas de literatura ou gramática?`,
+                suggestions: ['Autores essenciais', 'Figuras de linguagem', 'Como interpretar textos']
+            },
+            'história': {
+                keywords: ['história', 'historia', 'brasil', 'guerras', 'revolução'],
+                response: `🌍 **História no ENEM - Temas mais cobrados:**
+
+1. **Brasil República** (20-25% das questões)
+   - Era Vargas
+   - Ditadura Militar
+   - Redemocratização
+
+2. **Idade Contemporânea** (15-20%)
+   - 1ª e 2ª Guerras Mundiais
+   - Guerra Fria
+   - Conflitos atuais
+
+3. **Escravidão e Relações de Trabalho** (10-15%)
+
+4. **Movimentos Sociais** (10%)
+   - Direitos civis
+   - Movimentos populares
+
+5. **História da África e Cultura Afro-brasileira** (8-10%)
+
+**Dica:** Conecte eventos históricos com contexto atual. O ENEM adora isso!
+
+Quer aprofundar em algum período?`,
+                suggestions: ['Era Vargas resumo', 'Ditadura Militar', 'Movimentos sociais']
+            },
+            'default': {
+                response: `Desculpe, não entendi sua pergunta. 😅
+
+Posso ajudar com:
+• 📝 Redação e escrita
+• 🔢 Matemática e exatas
+• 📖 Português e literatura
+• 🌍 História e geografia
+• 🧘 Saúde mental e organização
+• 📅 Cronograma e estudos
+
+Tente perguntar de forma diferente ou escolha um tema acima!`,
+                suggestions: ['Dicas de redação', 'Como estudar matemática', 'Organizar cronograma', 'Lidar com ansiedade']
+            }
+        };
+
+        function findResponse(message) {
+            message = message.toLowerCase();
+            
+            for (let topic in knowledgeBase) {
+                if (topic === 'default') continue;
+                
+                const keywords = knowledgeBase[topic].keywords;
+                for (let keyword of keywords) {
+                    if (message.includes(keyword)) {
+                        return knowledgeBase[topic];
+                    }
+                }
+            }
+            
+            return knowledgeBase['default'];
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message === '') return;
+            
+            addUserMessage(message);
+            input.value = '';
+            
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = findResponse(message);
+                addBotMessage(response.response, response.suggestions);
+            }, 1500);
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('messageInput').value = message;
+            sendMessage();
+        }
+
+        function addUserMessage(message) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageHTML = `
+                <div class="message user">
+                    <div class="message-avatar">👤</div>
+                    <div class="message-content">${message}</div>
+                </div>
+            `;
+            messagesDiv.insertAdjacentHTML('beforeend', messageHTML);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function addBotMessage(message, suggestions = []) {
+            const messagesDiv = document.getElementById('chatMessages');
+            
+            let suggestionsHTML = '';
+            if (suggestions && suggestions.length > 0) {
+                suggestionsHTML = '<div class="suggestions">';
+                suggestions.forEach(sugg => {
+                    suggestionsHTML += `<button class="suggestion-btn" onclick="sendQuickMessage('${sugg}')">${sugg}</button>`;
+                });
+                suggestionsHTML += '</div>';
+            }
+            
+            const messageHTML = `
+                <div class="message bot">
+                    <div class="message-avatar">🤖</div>
+                    <div>
+                        <div class="message-content">${message.replace(/\n/g, '<br>')}</div>
+                        ${suggestionsHTML}
+                    </div>
+                </div>
+            `;
+            messagesDiv.insertAdjacentHTML('beforeend', messageHTML);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesDiv = document.getElementById('chatMessages');
+            const indicatorHTML = `
+                <div class="message bot" id="typingIndicator">
+                    <div class="message-avatar">🤖</div>
+                    <div class="typing-indicator active">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            messagesDiv.insertAdjacentHTML('beforeend', indicatorHTML);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Auto-focus no input
+        document.getElementById('messageInput').focus();
+    </script>
+</body>
+</html>

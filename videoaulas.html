@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videoaulas - Preparação ENEM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #f5576c;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .area-section {
+            margin-bottom: 40px;
+        }
+        .area-title {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .video-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f5576c;
+            transition: all 0.3s ease;
+        }
+        .video-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .video-title {
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .video-info {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .badge {
+            display: inline-block;
+            background: #f5576c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-right: 8px;
+        }
+        .btn-assistir {
+            background: #f5576c;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .btn-assistir:hover {
+            background: #f093fb;
+            transform: scale(1.05);
+        }
+        .back-btn {
+            display: inline-block;
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎥 Videoaulas</h1>
+        <p class="subtitle">Conteúdo em vídeo para todos os assuntos do ENEM</p>
+
+        <div class="area-section">
+            <div class="area-title">📖 Linguagens, Códigos e suas Tecnologias</div>
+            
+            <div class="video-card">
+                <div class="video-title">Interpretação de Textos e Gêneros Textuais</div>
+                <div class="video-info">Prof. Ana Silva • 2h30min</div>
+                <span class="badge">Português</span>
+                <span class="badge">Essencial</span>
+                <br>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+
+            <div class="video-card">
+                <div class="video-title">Literatura Brasileira: Do Romantismo ao Modernismo</div>
+                <div class="video-info">Prof. Carlos Mendes • 3h15min</div>
+                <span class="badge">Literatura</span>
+                <span class="badge">Completo</span>
+                <br>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+
+            <div class="video-card">
+                <div class="video-title">Inglês para o ENEM: Estratégias de Leitura</div>
+                <div class="video-info">Prof. Michael Brown • 1h45min</div>
+                <span class="badge">Inglês</span>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+        </div>
+
+        <div class="area-section">
+            <div class="area-title">🔢 Matemática e suas Tecnologias</div>
+            
+            <div class="video-card">
+                <div class="video-title">Funções: Linear, Quadrática e Exponencial</div>
+                <div class="video-info">Prof. Roberto Costa • 2h50min</div>
+                <span class="badge">Matemática</span>
+                <span class="badge">Fundamental</span>
+                <br>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+
+            <div class="video-card">
+                <div class="video-title">Geometria Plana e Espacial</div>
+                <div class="video-info">Prof. Marina Santos • 3h00min</div>
+                <span class="badge">Geometria</span>
+                <span class="badge">Completo</span>
+                <br>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+
+            <div class="video-card">
+                <div class="video-title">Estatística e Probabilidade</div>
+                <div class="video-info">Prof. Paulo Ferreira • 2h20min</div>
+                <span class="badge">Estatística</span>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+        </div>
+
+        <div class="area-section">
+            <div class="area-title">🌍 Ciências Humanas e suas Tecnologias</div>
+            
+            <div class="video-card">
+                <div class="video-title">História do Brasil: República</div>
+                <div class="video-info">Prof. Juliana Lima • 4h00min</div>
+                <span class="badge">História</span>
+                <span class="badge">Essencial</span>
+                <br>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+
+            <div class="video-card">
+                <div class="video-title">Geografia: Geopolítica e Atualidades</div>
+                <div class="video-info">Prof. Ricardo Alves • 3h30min</div>
+                <span class="badge">Geografia</span>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+
+            <div class="video-card">
+                <div class="video-title">Filosofia e Sociologia para o ENEM</div>
+                <div class="video-info">Prof. Beatriz Rocha • 2h45min</div>
+                <span class="badge">Filosofia</span>
+                <span class="badge">Sociologia</span>
+                <br>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+        </div>
+
+        <div class="area-section">
+            <div class="area-title">🔬 Ciências da Natureza e suas Tecnologias</div>
+            
+            <div class="video-card">
+                <div class="video-title">Física: Mecânica e Termodinâmica</div>
+                <div class="video-info">Prof. Marcos Oliveira • 3h20min</div>
+                <span class="badge">Física</span>
+                <span class="badge">Completo</span>
+                <br>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+
+            <div class="video-card">
+                <div class="video-title">Química Orgânica e Inorgânica</div>
+                <div class="video-info">Prof. Fernanda Dias • 3h50min</div>
+                <span class="badge">Química</span>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+
+            <div class="video-card">
+                <div class="video-title">Biologia: Ecologia e Evolução</div>
+                <div class="video-info">Prof. Patrícia Gomes • 2h55min</div>
+                <span class="badge">Biologia</span>
+                <span class="badge">Essencial</span>
+                <br>
+                <button class="btn-assistir">▶ Assistir</button>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-btn">← Voltar ao Menu Principal</a>
+    </div>
+</body>
+</html>

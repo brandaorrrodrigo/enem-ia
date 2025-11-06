@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Completo de Preparação para o ENEM Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .category-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 5px solid #667eea;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .card-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .stats-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1em;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 Sistema Completo de Preparação para o ENEM Pro</h1>
+        <p>Tudo que você precisa para conquistar sua aprovação!</p>
+    </div>
+
+    <div class="container">
+        <!-- Estatísticas -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">24</div>
+                <div class="stat-label">Módulos Completos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Ebooks Disponíveis</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">180</div>
+                <div class="stat-label">Dias até o ENEM</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">🤖</div>
+                <div class="stat-label">ChatBot IA</div>
+            </div>
+        </div>
+
+        <!-- Categoria 1: Conteúdo e Estudo -->
+        <div class="category">
+            <div class="category-title">
+                <span>📚</span>
+                Conteúdo e Materiais de Estudo
+            </div>
+            <div class="cards-grid">
+                <a href="videoaulas.html" class="card">
+                    <div class="card-icon">🎥</div>
+                    <div class="card-title">Videoaulas</div>
+                    <div class="card-description">Aulas em vídeo de todas as disciplinas com os melhores professores</div>
+                </a>
+
+                <a href="biblioteca-ebooks.html" class="card" style="border-left-color: #f5576c;">
+                    <div class="card-icon">📚</div>
+                    <div class="card-title">Biblioteca de Ebooks</div>
+                    <div class="card-description">150+ ebooks gratuitos para consulta e download</div>
+                </a>
+
+                <a href="materiais-estudo.html" class="card">
+                    <div class="card-icon">📖</div>
+                    <div class="card-title">Materiais de Estudo</div>
+                    <div class="card-description">PDFs, resumos, mapas mentais e apostilas completas</div>
+                </a>
+
+                <a href="questoes-comentadas.html" class="card">
+                    <div class="card-icon">❓</div>
+                    <div class="card-title">Questões Comentadas</div>
+                    <div class="card-description">Milhares de questões com resolução detalhada</div>
+                </a>
+
+                <a href="simulados-online.html" class="card">
+                    <div class="card-icon">📝</div>
+                    <div class="card-title">Simulados Online</div>
+                    <div class="card-description">Simule a prova real e avalie seu desempenho</div>
+                </a>
+
+                <a href="chatbot.html" class="card" style="border-left-color: #43e97b;">
+                    <div class="card-icon">🤖</div>
+                    <div class="card-title">ChatBot Assistente</div>
+                    <div class="card-description">Tire suas dúvidas com nosso assistente virtual inteligente</div>
+                </a>
+
+                <a href="gerador-questoes-ia.html" class="card" style="border-left-color: #f5576c;">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-title">Gerador de Questões IA <span style="font-size: 0.7em; color: #f5576c;">⭐ NOVO</span></div>
+                    <div class="card-description">Questões personalizadas geradas automaticamente pela IA</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Categoria 2: Organização -->
+        <div class="category">
+            <div class="category-title">
+                <span>⏰</span>
+                Organização e Planejamento
+            </div>
+            <div class="cards-grid">
+                <a href="cronograma-estudos.html" class="card">
+                    <div class="card-icon">📅</div>
+                    <div class="card-title">Cronograma de Estudos</div>
+                    <div class="card-description">Planeje suas semanas de estudo de forma eficiente</div>
+                </a>
+
+                <a href="gestao-tempo.html" class="card">
+                    <div class="card-icon">⏱️</div>
+                    <div class="card-title">Gestão de Tempo</div>
+                    <div class="card-description">Técnicas para otimizar seu tempo de estudo</div>
+                </a>
+
+                <a href="calendario-provas.html" class="card">
+                    <div class="card-icon">🗓️</div>
+                    <div class="card-title">Calendário de Provas</div>
+                    <div class="card-description">Todas as datas importantes do ENEM Pro</div>
+                </a>
+
+                <a href="ferramentas-tecnologicas.html" class="card">
+                    <div class="card-icon">💻</div>
+                    <div class="card-title">Ferramentas Tecnológicas</div>
+                    <div class="card-description">Apps e sites para turbinar seus estudos</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Categoria 3: Técnicas de Estudo -->
+        <div class="category">
+            <div class="category-title">
+                <span>🧠</span>
+                Técnicas e Métodos de Estudo
+            </div>
+            <div class="cards-grid">
+                <a href="tecnicas-memorizacao.html" class="card">
+                    <div class="card-icon">💡</div>
+                    <div class="card-title">Técnicas de Memorização</div>
+                    <div class="card-description">Memorize melhor e retenha mais conteúdo</div>
+                </a>
+
+                <a href="sistema-redacao.html" class="card">
+                    <div class="card-icon">✍️</div>
+                    <div class="card-title">Sistema de Redação</div>
+                    <div class="card-description">Domine a redação nota 1000 do ENEM</div>
+                </a>
+
+                <a href="grupos-estudo.html" class="card">
+                    <div class="card-icon">👥</div>
+                    <div class="card-title">Grupos de Estudo</div>
+                    <div class="card-description">Estude em grupo e compartilhe conhecimento</div>
+                </a>
+
+                <a href="dicas-motivacao.html" class="card">
+                    <div class="card-icon">💪</div>
+                    <div class="card-title">Dicas de Motivação</div>
+                    <div class="card-description">Mantenha-se motivado durante a jornada</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Categoria 4: Saúde e Bem-estar -->
+        <div class="category">
+            <div class="category-title">
+                <span>🧘</span>
+                Saúde e Bem-estar
+            </div>
+            <div class="cards-grid">
+                <a href="saude-mental.html" class="card">
+                    <div class="card-icon">🌟</div>
+                    <div class="card-title">Saúde Mental</div>
+                    <div class="card-description">Cuide da sua mente durante a preparação</div>
+                </a>
+
+                <a href="alimentacao-estudos.html" class="card">
+                    <div class="card-icon">🥗</div>
+                    <div class="card-title">Alimentação e Estudos</div>
+                    <div class="card-description">Alimente-se bem para estudar melhor</div>
+                </a>
+
+                <a href="exercicios-fisicos.html" class="card">
+                    <div class="card-icon">🏃</div>
+                    <div class="card-title">Exercícios Físicos</div>
+                    <div class="card-description">Pratique atividades físicas regularmente</div>
+                </a>
+
+                <a href="sono-desempenho.html" class="card">
+                    <div class="card-icon">😴</div>
+                    <div class="card-title">Sono e Desempenho</div>
+                    <div class="card-description">Durma bem para render mais nos estudos</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Categoria 5: Dia da Prova -->
+        <div class="category">
+            <div class="category-title">
+                <span>🎯</span>
+                Preparação para o Dia da Prova
+            </div>
+            <div class="cards-grid">
+                <a href="documentacao-inscricao.html" class="card">
+                    <div class="card-icon">📄</div>
+                    <div class="card-title">Documentação e Inscrição</div>
+                    <div class="card-description">Tudo sobre inscrição e documentos necessários</div>
+                </a>
+
+                <a href="local-prova.html" class="card">
+                    <div class="card-icon">📍</div>
+                    <div class="card-title">Local de Prova</div>
+                    <div class="card-description">Como encontrar e chegar ao local da prova</div>
+                </a>
+
+                <a href="dia-prova-checklist.html" class="card">
+                    <div class="card-icon">✅</div>
+                    <div class="card-title">Checklist do Dia da Prova</div>
+                    <div class="card-description">Lista completa do que levar e fazer</div>
+                </a>
+
+                <a href="pos-prova.html" class="card">
+                    <div class="card-icon">🎓</div>
+                    <div class="card-title">Pós-Prova</div>
+                    <div class="card-description">O que fazer após realizar o ENEM</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>💯 Sistema Completo de Preparação ENEM Pro</strong></p>
+            <p>Desenvolvido para você alcançar seus objetivos</p>
+            <p style="margin-top: 10px; opacity: 0.8;">📊 <a href="resumo-final.html" style="color: white; text-decoration: underline;">Ver Resumo Completo e Estatísticas</a></p>
+            <p style="margin-top: 15px;">
+                <a href="assinatura.html" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;">
+                    ⭐ Ver Planos Premium
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
